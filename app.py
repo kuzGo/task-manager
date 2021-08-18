@@ -69,9 +69,9 @@ def login():
                     existing_user["password"], request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
                 flash("Welcome, {}".format(
-                        request.form.get("username")))
+                    request.form.get("username")))
                 return redirect(url_for(
-                        "profile", username=session["user"]))
+                    "profile", username=session["user"]))
             else:
                 # invalid password match
                 flash("Incorrect Username and/or Password")
@@ -121,10 +121,10 @@ def add_task():
         return redirect(url_for("get_tasks"))
 
     categories = mongo.db.categories.find().sort("category_name", 1)
-    return render_template("add_task.html", categories=categories)  
+    return render_template("add_task.html", categories=categories)
 
 
-@app.route("/edit_task/<task_id>", methods=["GET", "POST"])  
+@app.route("/edit_task/<task_id>", methods=["GET", "POST"])
 def edit_task(task_id):
     if request.method == "POST":
         is_urgent = "on" if request.form.get("is_urgent") else "off"
@@ -137,10 +137,10 @@ def edit_task(task_id):
             "created_by": session["user"]
         }
         mongo.db.tasks.update({"_id": ObjectId(task_id)}, submit)
-        flash("Task Successfuly Updated!")     
+        flash("Task Successfuly Updated!")
     task = mongo.db.tasks.find_one({"_id": ObjectId(task_id)})
     categories = mongo.db.categories.find().sort("task_name", 1)
-    return render_template("edit_task.html", task=task, categories=categories) 
+    return render_template("edit_task.html", task=task, categories=categories)
 
 
 @app.route("/delete_task/<task_id>")
@@ -186,7 +186,7 @@ def edit_category(category_id):
 def delete_category(category_id):
     mongo.db.categories.remove({"_id": ObjectId(category_id)})
     flash("Category Successfuly Deleted")
-    return redirect(url_for("get_categories"))    
+    return redirect(url_for("get_categories"))
 
 
 if __name__ == "__main__":
